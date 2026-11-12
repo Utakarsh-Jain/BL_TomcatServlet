@@ -8,16 +8,12 @@
 </head>
 <body>
 
-    <!-- Display login success message -->
     <h1>Login Successful!</h1>
 
-    <!-- Welcome message for the predefined user -->
-    <h2>Welcome, Admin!</h2>
+    <h2>Welcome, ${username}!</h2>
 
-    <!-- Additional confirmation -->
     <p>You have successfully logged in.</p>
 
-    <!-- Link to return to login page -->
     <a href="login.html">Back to Login</a>
 
 </body>

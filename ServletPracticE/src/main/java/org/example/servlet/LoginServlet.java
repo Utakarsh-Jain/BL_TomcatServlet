@@ -1,7 +1,6 @@
 
 package org.example.servlet;
 
-// Import required Java and Servlet classes
 import java.io.IOException;
 
 import jakarta.servlet.ServletException;
@@ -10,45 +9,53 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-// Map this Servlet to the /login URL
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    // Handle HTTP POST requests from the login form
     @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Retrieve username entered by the user
+        // Retrieve username and password
         String username = request.getParameter("username");
-
-        // Retrieve password entered by the user
         String password = request.getParameter("password");
 
-        // Define predefined login credentials
-        String validUsername = "admin";
+        // Validate username
+        if (username == null || username.length() < 3 ||
+                !Character.isUpperCase(username.charAt(0))) {
+
+            response.setContentType("text/html");
+            response.getWriter().println("<h2>Invalid Username!</h2>");
+            response.getWriter().println(
+                    "<p>Username must start with a capital letter " +
+                            "and contain at least 3 characters.</p>"
+            );
+            response.getWriter().println(
+                    "<a href='login.html'>Try Again</a>"
+            );
+            return;
+        }
+
+        // Predefined login credentials
+        String validUsername = "Admin";
         String validPassword = "admin123";
 
-        // Check whether both username and password match
+        // Check credentials
         if (validUsername.equals(username) &&
                 validPassword.equals(password)) {
 
-            // Forward the request to the success JSP page
+            request.setAttribute("username", username);
+
             request.getRequestDispatcher("/LoginSuccess.jsp")
                     .forward(request, response);
 
         } else {
 
-            // Set the response content type to HTML
             response.setContentType("text/html");
-
-            // Display an error message for invalid credentials
             response.getWriter().println(
                     "<h2>Invalid Username or Password!</h2>"
             );
-
-            // Provide a link to return to the login page
             response.getWriter().println(
                     "<a href='login.html'>Try Again</a>"
             );
