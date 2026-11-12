@@ -37,11 +37,45 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+        // Validate password
+        boolean hasUppercase = password != null &&
+                password.matches(".*[A-Z].*");
+
+        boolean hasDigit = password != null &&
+                password.matches(".*[0-9].*");
+
+        boolean hasExactlyOneSpecialCharacter = password != null &&
+                password.matches("[A-Za-z0-9]*[^A-Za-z0-9][A-Za-z0-9]*");
+
+        boolean hasMinimumLength = password != null &&
+                password.length() >= 8;
+
+        if (!hasMinimumLength || !hasUppercase ||
+                !hasDigit || !hasExactlyOneSpecialCharacter) {
+
+            response.setContentType("text/html");
+            response.getWriter().println("<h2>Invalid Password!</h2>");
+            response.getWriter().println(
+                    "<p>Password must contain:</p>"
+            );
+            response.getWriter().println(
+                    "<ul>" +
+                            "<li>Minimum 8 characters</li>" +
+                            "<li>At least one uppercase letter</li>" +
+                            "<li>At least one digit</li>" +
+                            "<li>Exactly one special character</li>" +
+                            "</ul>"
+            );
+            response.getWriter().println(
+                    "<a href='login.html'>Try Again</a>"
+            );
+            return;
+        }
+
         // Predefined login credentials
         String validUsername = "Admin";
         String validPassword = "admin123";
 
-        // Check credentials
         if (validUsername.equals(username) &&
                 validPassword.equals(password)) {
 
